@@ -43,7 +43,7 @@ def importar_prode(archivo):
 	lista = []
 	for linea in archivo:
 		parseado = parsear_linea_prode(linea)
-		if parseado:
+		if (parseado) and (len(lista)<=26):
 			lista.append(parseado)
 	return lista
 

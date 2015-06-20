@@ -3,11 +3,26 @@
 
 
 from utils import *
-import time
+from prode import *
+from fixture import *
+import time, os
 from colorama import init
 init()
 from colorama import Fore, Back, Style
 
+def ordenar_fixture(lista_puntajes):
+	"""Como ordenar_puntajes, pero para el fixture, por numero de partido.
+	"""
+	lista_ordenada = sorted(lista_puntajes, key=lambda x: (x['numero_partido']))
+	return lista_ordenada
+
+def preparar_archivos():
+	if not(os.path.isfile("usuarios.dat")):
+		arch = open("usuarios.dat", "wb")
+		arch.close()
+	if not(os.path.isfile("fixture.dat")):
+		arch = open("fixture.dat", "wb")
+		arch.close()
 
 def printlogo():
 	logo = Style.BRIGHT + Fore.GREEN + """
@@ -31,7 +46,7 @@ def printlogo():
 		print linea
 		time.sleep(0.05)
 	time.sleep(1)
-	print Style.BRIGHT + "    Presionea Enter para continuar..." + Style.RESET_ALL,
+	print Style.BRIGHT + "    Presiona Enter para continuar..." + Style.RESET_ALL,
 	raw_input() #Seteo a una variable para que no salga en pantalla
 
 def menuprincipal():
@@ -93,6 +108,56 @@ def loginJugador():
 	#To-do. Por ahora manda un nombre debug para ver el menu.
 	menuJugador("MISSINGNO")
 
+def ListarFixture():
+	limpiar_pantalla()
+	ArchFixture = open("fixture.dat","rb")
+	fixture, dummy = leer_desde_archivo(ArchFixture)
+	ArchFixture.close()
+	fixture = ordenar_fixture(fixture)
+	print "\n  Lista de Partidos  \n"
+	i = 1
+	for item in fixture:
+		print "  " + str(item["numero_partido"]) + ") " + str(item["local"]) + " - " + str(item ["visitante"]),
+		if not(item["jugado"]):
+			print " (" + str(item["goles_local"]) + "-" + str(item["goles_visitante"]) + ")"
+		else:
+			print ""
+		i += 1
+		if i%7==1 and i<len(fixture):
+			cualquiera = raw_input("\n\n  Presione enter para la siguiente pagina")
+			limpiar_pantalla()
+			print "\n  Lista de Partidos  \n"
+	terminar = raw_input("\n\n  Presione enter para volver al menu anterior...")
+def CargarFixture():
+	limpiar_pantalla()
+	ArchUsuarios = open("usuarios.dat","rb")
+	usuarios = []
+	fin_lectura_usuarios = False
+	while not(fin_lectura_usuarios):
+		item, fin_lectura_usuarios = leer_desde_archivo(ArchUsuarios)
+		if item:
+			usuarios.append(item)
+	ArchUsuarios.close()
+	if len(usuarios)>0:
+		print "\n  Ya se han creado usuarios, no se puede volver a cargar el fixture.\n"
+		terminar = raw_input("  Presione enter para volver al menu anterior...")
+	else:
+		i = 1
+		finarch = False
+		ImpFixture = open("fxt_ca_2015.txt","rt")
+		lista = importar_fixture(ImpFixture)
+		ImpFixture.close()
+		ArchFixture = open("fixture.dat","wb")
+		guardar_en_archivo(ArchFixture, lista)
+		ArchFixture.close()
+		print "\n  Fixture cargado con ‚xito.\n"
+		terminar = raw_input("  Presione enter para volver al menu anterior...")
+
+
+
+
+
+
 def menuAdmin():
 	salir = False
 	OpcInv_Admin = False
@@ -118,8 +183,7 @@ def menuAdmin():
 			opcion = int(raw_input("  Ingrese la opci¢n elegida, y luego presione Enter: "))
 			OpcInv_Admin = False if opcion in [0,1,2,3,4,5] else True
 			if opcion == 1:
-				#TO-DO
-				pass
+				CargarFixture()
 			elif opcion == 2:
 				#TO-DO
 				pass
@@ -130,8 +194,7 @@ def menuAdmin():
 				#TO-DO
 				pass
 			elif opcion == 5:
-				#TO-DO
-				pass
+				ListarFixture()
 			elif opcion == 0:
 				salir = True
 		except ValueError:
@@ -183,7 +246,7 @@ def menuprincipal():
 #
 #Comienza el programa
 #
-
 limpiar_pantalla()
+preparar_archivos()
 printlogo()
 menuprincipal()

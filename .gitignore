@@ -101,3 +101,5 @@ $RECYCLE.BIN/
 *.lnk
 main2.py
 logo.fw.png
+usuarios.dat
+*.dat
