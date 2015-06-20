@@ -1,5 +1,5 @@
 # coding=UTF-8
-#pyProde v0.1
+# pyProde v0.1
 
 
 from utils import *
@@ -10,8 +10,7 @@ from colorama import Fore, Back, Style
 
 
 def printlogo():
-	logo = Style.BRIGHT + Fore.GREEN
-	logo = logo + """
+	logo = Style.BRIGHT + Fore.GREEN + """
 
 ===============================================================================
 
@@ -26,8 +25,7 @@ def printlogo():
 
 
 ===============================================================================
-"""
-	logo = logo + Fore.RESET + Style.RESET_ALL
+""" + Fore.RESET + Style.RESET_ALL
 
 	for linea in logo.split("\n"):
 		print linea
@@ -49,10 +47,100 @@ def printlogo_mini():
 
 """ + Fore.RESET
 
+def menuJugador(nombre):
+	salir = False
+	OpcInv_Jugador = False
+	while not(salir):
+		limpiar_pantalla()
+		printlogo_mini()
+		print """
+""" + Back.WHITE + Fore.BLACK + "  Menu de Jugador - " + nombre + "  " + Back.RESET + Fore.RESET + """
+
+    1: Mi Prode
+    2: Modificar Partido
+    3: Ver tabla de posiciones
+    0: Volver al men£ principal"""
+		print ""
+		if OpcInv_Jugador:
+			print Back.RED + Fore.WHITE + Style.BRIGHT + "  Error: Ha ingresado una opci¢n inv lida. Por favor, int‚ntelo de nuevo...  " + Back.RESET + Fore.RESET + Style.RESET_ALL
+		else:
+			print ""
+		print ""
+		try:
+			opcion = int(raw_input("  Ingrese la opci¢n elegida, y luego presione Enter: "))
+			OpcInv_Jugador = False if opcion in [0,1,2,3,4,5] else True
+			if opcion == 1:
+				#TO-DO
+				pass
+			elif opcion == 2:
+				#TO-DO
+				pass
+			elif opcion == 3:
+				#TO-DO
+				pass
+			elif opcion == 4:
+				#TO-DO
+				pass
+			elif opcion == 5:
+				#TO-DO
+				pass
+			elif opcion == 0:
+				salir = True
+		except ValueError:
+			OpcInv_Jugador = True
+
+def loginJugador():
+	#To-do. Por ahora manda un nombre debug para ver el menu.
+	menuJugador("MISSINGNO")
+
+def menuAdmin():
+	salir = False
+	OpcInv_Admin = False
+	while not(salir):
+		limpiar_pantalla()
+		printlogo_mini()
+		print """
+""" + Back.WHITE + Fore.BLACK + """  Menu de Administrador  """ + Back.RESET + Fore.RESET + """
+
+    1: Cargar fixture del torneo
+    2: Agregar usuarios
+    3: Listar usuarios
+    4: Cargar resultado de un partido
+    5: Listar partidos
+    0: Volver al men£ principal"""
+		print ""
+		if OpcInv_Admin:
+			print Back.RED + Fore.WHITE + Style.BRIGHT + "  Error: Ha ingresado una opci¢n inv lida. Por favor, int‚ntelo de nuevo...  " + Back.RESET + Fore.RESET + Style.RESET_ALL
+		else:
+			print ""
+		print ""
+		try:
+			opcion = int(raw_input("  Ingrese la opci¢n elegida, y luego presione Enter: "))
+			OpcInv_Admin = False if opcion in [0,1,2,3,4,5] else True
+			if opcion == 1:
+				#TO-DO
+				pass
+			elif opcion == 2:
+				#TO-DO
+				pass
+			elif opcion == 3:
+				#TO-DO
+				pass
+			elif opcion == 4:
+				#TO-DO
+				pass
+			elif opcion == 5:
+				#TO-DO
+				pass
+			elif opcion == 0:
+				salir = True
+		except ValueError:
+			OpcInv_Admin = True
+
 def menuprincipal():
-	continuar = False
-	OpcInv = False
-	while not(continuar):
+	continuar = True
+	OpcInv_Main = False
+	while continuar:
 		limpiar_pantalla()
 		printlogo_mini()
 		print """
@@ -63,15 +151,14 @@ def menuprincipal():
 	2: Ingresar como Jugador
 	0: Salir"""
 		print ""
-		if OpcInv:
+		if OpcInv_Main:
 			print Back.RED + Fore.WHITE + Style.BRIGHT + "  Error: Ha ingresado una opci¢n inv lida. Por favor, int‚ntelo de nuevo...  " + Back.RESET + Fore.RESET + Style.RESET_ALL
 		else:
 			print ""
 		print ""
 		try:
 			opcion = int(raw_input("  Ingrese la opci¢n elegida, y luego presione Enter: "))
-			OpcInv = False if opcion in [0,1,2] else True
-			continuar = True if opcion in [0,1,2] else False
+			OpcInv_Main = False if opcion in [0,1,2] else True
 			if opcion == 1:
 				menuAdmin()
 			elif opcion == 2:
@@ -84,8 +171,9 @@ def menuprincipal():
 """ + Back.RESET + Fore.RESET
 				time.sleep(1.5)
 				limpiar_pantalla()
+				continuar = False
 		except ValueError:
-			OpcInv = True
+			OpcInv_Main = True
 				
 
 
