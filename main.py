@@ -23,7 +23,6 @@ def calcular_puntaje_jugador(jugador):
 			datos_usuario = item
 	fixture = ordenar_fixture(fixture)
 	datos_usuario["prode"] = sorted(datos_usuario["prode"], key=lambda x: (x['numero_partido']))
-	print "\n  Mi Prode  \n"
 	i = 1
 	for item in fixture:
 		if (datos_usuario["prode"][i-1]["ingresado"]):
@@ -103,7 +102,7 @@ def tablaPosiciones(nombre):
 	ArchUsuarios.close()
 	usuarios = calcular_puntajes_de_todos(usuarios)
 	usuarios = ordenar_puntajes(usuarios)
-	print "\n\n  Tabla de Posiciones\n"
+	print "\n  Tabla de Posiciones\n"
 	i = 1
 	for item in usuarios:
 		if item["nombre"] == nombre:
@@ -116,12 +115,12 @@ def tablaPosiciones(nombre):
 		else:
 			print ""
 		i += 1
-		if i%9==1 and i<len(fixture):
+		if i%9==1 and i<len(usuarios):
 			print "\n"
 			cualquiera = raw_input("\n\n  Presione enter para la siguiente pagina")
 			limpiar_pantalla()
-			print "\n  Mi Prode  \n"
-
+			print "\n  Tabla de Posiciones\n"
+	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
 def miProde(nombre):
 	limpiar_pantalla()
 	ArchFixture = open("fixture.dat","rb")
