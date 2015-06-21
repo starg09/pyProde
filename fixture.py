@@ -49,8 +49,9 @@ def importar_fixture(archivo):
 	lista = []
 	for linea in archivo:
 		parseado = parsear_linea_fixture(linea)
-		parseado["jugado"] = False
-		parseado["goles_local"] = 0
-		parseado["goles_visitante"] = 0
-		lista.append(parseado)
+		if parseado:
+			parseado["jugado"] = False
+			parseado["goles_local"] = 0
+			parseado["goles_visitante"] = 0
+			lista.append(parseado)
 	return lista
