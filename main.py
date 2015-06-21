@@ -326,13 +326,11 @@ def AgregarUsuario():
 				"prode": []
 			}
 			#To-do: Reemplazar por funciones de prode.py, usar csv de "0 a 0"
-			for partido in fixture:
-				nuevo_usuario["prode"].append({
-						"numero_partido": partido["numero_partido"],
-						"ingresado": False,
-						"goles_local": 0,
-						"goles_visitante": 0
-				})
+			ArchProde0a0 = open("prode_0_a_0.csv","rt")
+			nuevo_usuario["prode"] = importar_prode(ArchProde0a0)
+			ArchProde0a0.close()
+			for partido in nuevo_usuario["prode"]:
+				partido["ingresado"]= False #Cuesti¢n est‚tica, y a los partidos que no se haya ingresado pronostico se entregan 0 puntos.
 			usuarios.append(nuevo_usuario)
 			ArchUsuarios = open("usuarios.dat","wb")
 			guardar_en_archivo(ArchUsuarios, usuarios)
