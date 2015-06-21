@@ -112,8 +112,27 @@ def menuJugador(nombre):
 			OpcInv_Jugador = True
 
 def loginJugador():
-	#To-do. Por ahora manda un nombre debug para ver el menu.
-	menuJugador("MISSINGNO")
+	limpiar_pantalla()
+	ArchUsuarios = open("usuarios.dat","rb")
+	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
+	ArchUsuarios.close()
+	logeado = False
+	dejar_login = False
+	while not dejar_login:
+		nick = raw_input("  Ingrese su nombre de usuario:")
+		if not(nick.isalnum()):
+			print "\n  ERROR: Solo se permiten caracteres alfanum‚ricos.\n"
+		else:
+			for item in usuarios:
+				logeado = True if (item["nombre"] == nick.upper()) else False
+				dejar_login = True if (item["nombre"] == nick.upper()) else False
+		if logeado:
+			menuJugador(nick.upper())
+		else:
+			print "\n  ERROR: Usuario inexistente.\n"
+			dejar_login = not(opcionsn("  ¨Desea ingresar otro usuario? "))
+
+
 
 def ListarFixture():
 	limpiar_pantalla()
@@ -138,7 +157,6 @@ def ListarFixture():
 				limpiar_pantalla()
 				print "\n  Lista de Partidos  \n"
 	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
-
 def AgregarResultado():
 	limpiar_pantalla()
 	ArchFixture = open("fixture.dat","rb")
@@ -171,7 +189,6 @@ def AgregarResultado():
 				fixture[id_partido-1]["jugado"] = True
 				print "\n  Resultado guardado con ‚xito."
 				continuar_id = opcionsn("  ¨Desea agregar otro resultado?")
-
 def ListarUsuarios():
 	limpiar_pantalla()
 	ArchUsuarios = open("usuarios.dat","rb")
@@ -191,7 +208,6 @@ def ListarUsuarios():
 				limpiar_pantalla()
 				print "\n  Lista de Usuarios  \n"
 	terminar = raw_input("\n  Presione Enter para volver al men£ anterior...")
-
 def AgregarUsuario():
 	limpiar_pantalla()
 	ArchFixture = open("fixture.dat","rb")
@@ -238,7 +254,6 @@ def AgregarUsuario():
 			ArchUsuarios.close()
 			print "\n  Usuario creado: " + nombre_elegido.upper()
 	terminar = raw_input("  Presione Enter para volver al men£ anterior...")
-
 def CargarFixture():
 	limpiar_pantalla()
 	ArchUsuarios = open("usuarios.dat","rb")
