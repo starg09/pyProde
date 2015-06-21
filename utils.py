@@ -49,7 +49,7 @@ def ordenar_puntajes(lista_puntajes):
 	las claves puntaje y usuario.
 	Retorna la misma lista que recibió como parámetro, pero ordenada.
 	"""
-	lista_ordenada = sorted(lista_puntajes, key=lambda x: (-x['puntaje'], x['usuario']))
+	lista_ordenada = sorted(lista_puntajes, key=lambda x: (-x['puntaje'], x['nombre']))
 	return lista_ordenada
 
 

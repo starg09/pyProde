@@ -10,6 +10,32 @@ from colorama import init
 init()
 from colorama import Fore, Back, Style
 
+def calcular_puntaje_jugador(jugador):
+	puntaje = 0
+	ArchFixture = open("fixture.dat","rb")
+	fixture, dummy = leer_desde_archivo(ArchFixture)
+	ArchFixture.close()
+	ArchUsuarios = open("usuarios.dat","rb")
+	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
+	ArchUsuarios.close()
+	for item in usuarios:
+		if item["nombre"] == jugador:
+			datos_usuario = item
+	fixture = ordenar_fixture(fixture)
+	datos_usuario["prode"] = sorted(datos_usuario["prode"], key=lambda x: (x['numero_partido']))
+	print "\n  Mi Prode  \n"
+	i = 1
+	for item in fixture:
+		if (datos_usuario["prode"][i-1]["ingresado"]):
+			puntaje += calcular_puntaje(item, datos_usuario["prode"][i-1])
+		i += 1
+	return puntaje
+
+def calcular_puntajes_de_todos(lista):
+	for usuario in lista:
+		usuario["puntaje"] = calcular_puntaje_jugador(usuario["nombre"])
+	return lista
+
 def ordenar_fixture(lista_puntajes):
 	"""Como ordenar_puntajes, pero para el fixture, por numero de partido.
 	"""
@@ -69,6 +95,32 @@ def printlogo_mini():
 ===============================================================================
 
 """ + Fore.RESET
+
+def tablaPosiciones(nombre):
+	limpiar_pantalla()
+	ArchUsuarios = open("usuarios.dat","rb")
+	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
+	ArchUsuarios.close()
+	usuarios = calcular_puntajes_de_todos(usuarios)
+	usuarios = ordenar_puntajes(usuarios)
+	print "\n\n  Tabla de Posiciones\n"
+	i = 1
+	for item in usuarios:
+		if item["nombre"] == nombre:
+			print Fore.YELLOW + Style.BRIGHT + " ",
+		else:
+			print " ",
+		print str(i) + ") " + item["nombre"] + ": " + str(item["puntaje"]) + " puntos",
+		if item["nombre"] == nombre:
+			print Fore.RESET + Style.RESET_ALL
+		else:
+			print ""
+		i += 1
+		if i%9==1 and i<len(fixture):
+			print "\n"
+			cualquiera = raw_input("\n\n  Presione enter para la siguiente pagina")
+			limpiar_pantalla()
+			print "\n  Mi Prode  \n"
 
 def miProde(nombre):
 	limpiar_pantalla()
@@ -207,7 +259,7 @@ def menuJugador(nombre):
 		print ""
 		try:
 			opcion = int(raw_input("  Ingrese la opci¢n elegida, y luego presione Enter: "))
-			OpcInv_Jugador = False if opcion in [0,1,2,3] else True
+			OpcInv_Jugador = False if opcion in [0,1,2,3,4] else True
 			if opcion == 1:
 				MenuImportarProde(nombre)
 			elif opcion == 2:
@@ -215,8 +267,7 @@ def menuJugador(nombre):
 			elif opcion == 3:
 				AgregarPronostico(nombre)
 			elif opcion == 4:
-				#TO-DO
-				pass
+				tablaPosiciones(nombre)
 			elif opcion == 0:
 				salir = True
 		except ValueError:
@@ -235,13 +286,14 @@ def loginJugador():
 	else:
 		dejar_login = False
 	while not dejar_login:
-		nick = raw_input("  Ingrese su nombre de usuario:")
+		nick = raw_input("\n  Ingrese su nombre de usuario:")
 		if not(nick.isalnum()):
 			print "\n  ERROR: Solo se permiten caracteres alfanum‚ricos.\n"
 		else:
 			for item in usuarios:
-				logeado = True if (item["nombre"] == nick.upper()) else False
-				dejar_login = True if (item["nombre"] == nick.upper()) else False
+				if (item["nombre"] == nick.upper()):
+					logeado = True
+					dejar_login = True 
 		if logeado:
 			menuJugador(nick.upper())
 		else:
