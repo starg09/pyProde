@@ -24,14 +24,14 @@ def calcular_puntaje(resultado, pronostico):
 	local y visitante.
 	"""
 	puntos = 0
-	diferencia_real = resultado['local'] - resultado['visitante']
-	diferencia_pronosticada = pronostico['local'] - pronostico['visitante']
+	diferencia_real = resultado['goles_local'] - resultado['goles_visitante']
+	diferencia_pronosticada = pronostico['goles_local'] - pronostico['goles_visitante']
 	if diferencia_pronosticada == diferencia_real:
-		puntos += 5 if pronostico['local'] == resultado['local'] else 3
+		puntos += 5 if pronostico['goles_local'] == resultado['goles_local'] else 3
 	else:
-		if pronostico['local'] == resultado['local']:
+		if pronostico['goles_local'] == resultado['goles_local']:
 			puntos += 1
-		if pronostico['visitante'] == resultado['visitante']:
+		if pronostico['goles_visitante'] == resultado['goles_visitante']:
 			puntos += 1
 		if diferencia_real < 0 and diferencia_pronosticada < 0:
 			puntos += 2
