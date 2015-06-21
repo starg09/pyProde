@@ -10,14 +10,21 @@ from colorama import init
 init()
 from colorama import Fore, Back, Style
 
+def cargar_binario(nombre_archivo):
+	archbin = open(nombre_archivo,"rb")
+	datos, dummy = leer_desde_archivo(archbin)
+	archbin.close()
+	return datos
+
+def guardar_binario(datos,nombre_archivo):
+	archbin = open(nombre_archivo,"wb")
+	guardar_en_archivo(archbin, datos)
+	archbin.close()
+
 def calcular_puntaje_jugador(jugador):
 	puntaje = 0
-	ArchFixture = open("fixture.dat","rb")
-	fixture, dummy = leer_desde_archivo(ArchFixture)
-	ArchFixture.close()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	fixture = cargar_binario("fixture.dat")
+	usuarios = cargar_binario("usuarios.dat")
 	for item in usuarios:
 		if item["nombre"] == jugador:
 			datos_usuario = item
@@ -97,9 +104,7 @@ def printlogo_mini():
 
 def tablaPosiciones(nombre):
 	limpiar_pantalla()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	usuarios = cargar_binario("usuarios.dat")
 	usuarios = calcular_puntajes_de_todos(usuarios)
 	usuarios = ordenar_puntajes(usuarios)
 	print "\n  Tabla de Posiciones\n"
@@ -123,12 +128,8 @@ def tablaPosiciones(nombre):
 	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
 def miProde(nombre):
 	limpiar_pantalla()
-	ArchFixture = open("fixture.dat","rb")
-	fixture, dummy = leer_desde_archivo(ArchFixture)
-	ArchFixture.close()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	fixture = cargar_binario("fixture.dat")
+	usuarios = cargar_binario("usuarios.dat")
 	for item in usuarios:
 		if item["nombre"] == nombre:
 			datos_usuario = item
@@ -156,12 +157,8 @@ def miProde(nombre):
 	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
 def AgregarPronostico(nombre):
 	limpiar_pantalla()
-	ArchFixture = open("fixture.dat","rb")
-	fixture, dummy = leer_desde_archivo(ArchFixture) #Variable dummy se usar  siempre cuando no se necesite esa var
-	ArchFixture.close()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	fixture = cargar_binario("fixture.dat")
+	usuarios = cargar_binario("usuarios.dat")
 	for item in usuarios:
 		if item["nombre"] == nombre:
 			item["prode"] = sorted(item["prode"], key=lambda x: (x['numero_partido']))
@@ -193,19 +190,13 @@ def AgregarPronostico(nombre):
 					item["prode"][id_partido-1]["goles_local"] = gol_l
 					item["prode"][id_partido-1]["goles_visitante"] = gol_v
 					item["prode"][id_partido-1]["ingresado"] = True
-					ArchUsuarios = open("usuarios.dat","wb")
-					guardar_en_archivo(ArchUsuarios, usuarios)
-					ArchUsuarios.close()
+					guardar_binario(usuarios,"usuarios.dat")
 					print "\n  Resultado guardado con ‚xito."
 					continuar_id = opcionsn("  ¨Desea agregar otro resultado?")
 def MenuImportarProde(nombre):
 	limpiar_pantalla()
-	ArchFixture = open("fixture.dat","rb")
-	fixture, dummy = leer_desde_archivo(ArchFixture) #Variable dummy se usar  siempre cuando no se necesite esa var
-	ArchFixture.close()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	fixture = cargar_binario("fixture.dat")
+	usuarios = cargar_binario("usuarios.dat")
 	for item in usuarios:
 		if item["nombre"] == nombre:
 			item["prode"] = sorted(item["prode"], key=lambda x: (x['numero_partido']))
@@ -227,9 +218,7 @@ def MenuImportarProde(nombre):
 					for partido in prode_importado:
 						partido["ingresado"] = True
 					item["prode"] = actualizar_prode(item["prode"], fixture, prode_importado)
-					ArchUsuarios = open("usuarios.dat","wb")
-					guardar_en_archivo(ArchUsuarios, usuarios)
-					ArchUsuarios.close()
+					guardar_binario(usuarios,"usuarios.dat")
 					limpiar_pantalla()
 					print "\n  Prode importado con ‚xito.\n"
 					terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
@@ -274,9 +263,7 @@ def menuJugador(nombre):
 
 def loginJugador():
 	limpiar_pantalla()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	usuarios = cargar_binario("usuarios.dat")
 	logeado = False
 	if not(usuarios):
 		dejar_login = True
@@ -302,9 +289,7 @@ def loginJugador():
 
 def ListarFixture():
 	limpiar_pantalla()
-	ArchFixture = open("fixture.dat","rb")
-	fixture, dummy = leer_desde_archivo(ArchFixture)
-	ArchFixture.close()
+	fixture = cargar_binario("fixture.dat")
 	if not(fixture):
 		print "\n  Error: Fixture no cargado.\n"
 	else:
@@ -325,9 +310,7 @@ def ListarFixture():
 	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
 def AgregarResultado():
 	limpiar_pantalla()
-	ArchFixture = open("fixture.dat","rb")
-	fixture, dummy = leer_desde_archivo(ArchFixture) #Variable dummy se usar  siempre cuando no se necesite esa var
-	ArchFixture.close()
+	fixture = cargar_binario("fixture.dat")
 	if not(fixture):
 		print "\n  Antes de agregar un resultado, debe cargarse el fixture.\n"
 		terminar = raw_input("\n  Presione Enter para volver al men£ anterior...")
@@ -354,16 +337,12 @@ def AgregarResultado():
 				fixture[id_partido-1]["goles_local"] = gol_l
 				fixture[id_partido-1]["goles_visitante"] = gol_v
 				fixture[id_partido-1]["jugado"] = True
-				ArchFixture = open("fixture.dat","wb")
-				guardar_en_archivo(ArchFixture, fixture)
-				ArchFixture.close()
+				guardar_binario(fixture,"fixture.dat")
 				print "\n  Resultado guardado con ‚xito."
 				continuar_id = opcionsn("  ¨Desea agregar otro resultado?")
 def ListarUsuarios():
 	limpiar_pantalla()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	usuarios = cargar_binario("usuarios.dat")
 	if not(usuarios):
 		print "\n  No hay usuarios para listar.\n"
 	else:
@@ -380,9 +359,7 @@ def ListarUsuarios():
 	terminar = raw_input("\n  Presione Enter para volver al men£ anterior...")
 def AgregarUsuario():
 	limpiar_pantalla()
-	ArchFixture = open("fixture.dat","rb")
-	fixture, dummy = leer_desde_archivo(ArchFixture) #Variable dummy se usar  siempre cuando no se necesite esa var
-	ArchFixture.close()
+	fixture = cargar_binario("fixture.dat")
 	if not(fixture):
 		print "\n  Antes de crear usuarios, debe cargarse el fixture.\n"
 	else:
@@ -395,9 +372,7 @@ def AgregarUsuario():
 				print Back.RED + Fore.WHITE + Style.BRIGHT + "\n  Error: Solo puede ingresar caracteres alfanum‚ricos.\n" + Back.RESET + Fore.RESET + Style.RESET_ALL
 
 		nombre_elegido = nombre_elegido.upper()
-		ArchUsuarios = open("usuarios.dat","rb")
-		usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-		ArchUsuarios.close()
+		usuarios = cargar_binario("usuarios.dat")
 		NombreExistente = False
 		if not(usuarios):
 			usuarios = []
@@ -419,16 +394,12 @@ def AgregarUsuario():
 			for partido in nuevo_usuario["prode"]:
 				partido["ingresado"]= False #Cuesti¢n est‚tica, y a los partidos que no se haya ingresado pronostico se entregan 0 puntos.
 			usuarios.append(nuevo_usuario)
-			ArchUsuarios = open("usuarios.dat","wb")
-			guardar_en_archivo(ArchUsuarios, usuarios)
-			ArchUsuarios.close()
+			guardar_binario(usuarios,"usuarios.dat")
 			print "\n  Usuario creado: " + nombre_elegido.upper()
 	terminar = raw_input("  Presione Enter para volver al men£ anterior...")
 def CargarFixture():
 	limpiar_pantalla()
-	ArchUsuarios = open("usuarios.dat","rb")
-	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
-	ArchUsuarios.close()
+	usuarios = cargar_binario("usuarios.dat")
 	if usuarios:
 		print "\n  Ya se han creado usuarios, no se puede volver a cargar el fixture.\n"
 	else:
@@ -436,9 +407,7 @@ def CargarFixture():
 		ImpFixture = open("fxt_ca_2015.txt","rt")
 		lista = importar_fixture(ImpFixture)
 		ImpFixture.close()
-		ArchFixture = open("fixture.dat","wb")
-		guardar_en_archivo(ArchFixture, lista)
-		ArchFixture.close()
+		guardar_binario(lista,"fixture.dat")
 		print "\n  Fixture cargado con ‚xito. " + str(len(lista)) + " partidos detectados.\n"
 	terminar = raw_input("  Presione Enter para volver al men£ anterior...")
 
