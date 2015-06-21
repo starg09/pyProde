@@ -98,12 +98,11 @@ def miProde(nombre):
 		else:
 			print ""
 		i += 1
-		if i%7==1 and i<len(fixture):
+		if i%9==1 and i<len(fixture):
 			cualquiera = raw_input("\n\n  Presione enter para la siguiente pagina")
 			limpiar_pantalla()
 			print "\n  Mi Prode  \n"
 	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
-
 def AgregarPronostico(nombre):
 	limpiar_pantalla()
 	ArchFixture = open("fixture.dat","rb")
@@ -148,6 +147,44 @@ def AgregarPronostico(nombre):
 					ArchUsuarios.close()
 					print "\n  Resultado guardado con ‚xito."
 					continuar_id = opcionsn("  ¨Desea agregar otro resultado?")
+def MenuImportarProde(nombre):
+	limpiar_pantalla()
+	ArchFixture = open("fixture.dat","rb")
+	fixture, dummy = leer_desde_archivo(ArchFixture) #Variable dummy se usar  siempre cuando no se necesite esa var
+	ArchFixture.close()
+	ArchUsuarios = open("usuarios.dat","rb")
+	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
+	ArchUsuarios.close()
+	for item in usuarios:
+		if item["nombre"] == nombre:
+			item["prode"] = sorted(item["prode"], key=lambda x: (x['numero_partido']))
+			fixture = ordenar_fixture(fixture)
+			nombre_archivo = raw_input("\n  [Para salir sin efectuar cambios, no mande nada]\n  [Formatos validos: *.csv - *.txt]\n\n  Ingrese el nombre del archivo a importar, y presione Enter: ")
+			while (nombre_archivo) and(nombre_archivo.split(".")[-1] not in ["txt","csv"]):
+				limpiar_pantalla()
+				print "\n  ERROR: Formato no soportado.\n"
+				nombre_archivo = raw_input("\n  [Para salir sin efectuar cambios, no mande nada]\n  [Formatos validos: *.csv - *.txt]\n\n  Ingrese el nombre del archivo a importar, y presione Enter: ")
+			if nombre_archivo:
+				if not(os.path.isfile(nombre_archivo)):
+					limpiar_pantalla()
+					print "\n  ERROR: Archivo no existente.\n"
+					terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
+				else:
+					ProdeAImportar = open(nombre_archivo,"rt")
+					prode_importado = importar_prode(ProdeAImportar)
+					ProdeAImportar.close()
+					for partido in prode_importado:
+						partido["ingresado"] = True
+					item["prode"] = actualizar_prode(item["prode"], fixture, prode_importado)
+					ArchUsuarios = open("usuarios.dat","wb")
+					guardar_en_archivo(ArchUsuarios, usuarios)
+					ArchUsuarios.close()
+					limpiar_pantalla()
+					print "\n  Prode importado con ‚xito.\n"
+					terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
+			else:
+				pass
+
 
 def menuJugador(nombre):
 	salir = False
@@ -172,8 +209,7 @@ def menuJugador(nombre):
 			opcion = int(raw_input("  Ingrese la opci¢n elegida, y luego presione Enter: "))
 			OpcInv_Jugador = False if opcion in [0,1,2,3] else True
 			if opcion == 1:
-				#TO-DO
-				pass
+				MenuImportarProde(nombre)
 			elif opcion == 2:
 				miProde(nombre)
 			elif opcion == 3:
@@ -231,7 +267,7 @@ def ListarFixture():
 			else:
 				print ""
 			i += 1
-			if i%7==1 and i<len(fixture):
+			if i%9==1 and i<len(fixture):
 				cualquiera = raw_input("\n\n  Presione enter para la siguiente pagina")
 				limpiar_pantalla()
 				print "\n  Lista de Partidos  \n"
