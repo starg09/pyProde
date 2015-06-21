@@ -70,6 +70,40 @@ def printlogo_mini():
 
 """ + Fore.RESET
 
+def miProde(nombre):
+	limpiar_pantalla()
+	ArchFixture = open("fixture.dat","rb")
+	fixture, dummy = leer_desde_archivo(ArchFixture)
+	ArchFixture.close()
+	ArchUsuarios = open("usuarios.dat","rb")
+	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
+	ArchUsuarios.close()
+	for item in usuarios:
+		if item["nombre"] == nombre:
+			datos_usuario = item
+	fixture = ordenar_fixture(fixture)
+	datos_usuario["prode"] = sorted(datos_usuario["prode"], key=lambda x: (x['numero_partido']))
+	print "\n  Mi Prode  \n"
+	i = 1
+	for item in fixture:
+		print "  " + str(item["numero_partido"]) + ") " + str(item["local"]) + " - " + str(item ["visitante"]),
+		if (datos_usuario["prode"][i-1]["ingresado"]):
+			print " (" + str(datos_usuario["prode"][i-1]["goles_local"]) + "-" + str(datos_usuario["prode"][i-1]["goles_visitante"]) + ")",
+		if (item["jugado"]):
+			print " [" + str(item["goles_local"]) + "-" + str(item["goles_visitante"]) + "]",
+			if not(datos_usuario["prode"][i-1]["ingresado"]):
+				print "[0]"
+			else:
+				print "[" + str(calcular_puntaje(item, datos_usuario["prode"][i-1])) + "]"
+		if not (datos_usuario["prode"][i-1]["ingresado"]):
+			print ""
+		i += 1
+		if i%7==1 and i<len(fixture):
+			cualquiera = raw_input("\n\n  Presione enter para la siguiente pagina")
+			limpiar_pantalla()
+			print "\n  Mi Prode  \n"
+	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
+
 def menuJugador(nombre):
 	salir = False
 	OpcInv_Jugador = False
@@ -78,9 +112,10 @@ def menuJugador(nombre):
 		printlogo_mini()
 		print "\n" + Back.WHITE + Fore.BLACK + "  Menu de Jugador - " + nombre + "  " + Back.RESET + Fore.RESET + """
 
-    1: Mi Prode
-    2: Modificar Partido
-    3: Ver tabla de posiciones
+    1: Importar Prode
+    2: Mi Prode
+    3: Modificar Partido
+    4: Ver tabla de posiciones
     0: Volver al men£ principal"""
 		print ""
 		if OpcInv_Jugador:
@@ -90,20 +125,16 @@ def menuJugador(nombre):
 		print ""
 		try:
 			opcion = int(raw_input("  Ingrese la opci¢n elegida, y luego presione Enter: "))
-			OpcInv_Jugador = False if opcion in [0,1,2,3,4,5] else True
+			OpcInv_Jugador = False if opcion in [0,1,2,3] else True
 			if opcion == 1:
 				#TO-DO
 				pass
 			elif opcion == 2:
-				#TO-DO
-				pass
+				miProde(nombre)
 			elif opcion == 3:
 				#TO-DO
 				pass
 			elif opcion == 4:
-				#TO-DO
-				pass
-			elif opcion == 5:
 				#TO-DO
 				pass
 			elif opcion == 0:
@@ -117,7 +148,12 @@ def loginJugador():
 	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
 	ArchUsuarios.close()
 	logeado = False
-	dejar_login = False
+	if not(usuarios):
+		dejar_login = True
+		print "\n  Todavia no se ha creado ning£n usuario.\n"
+		terminar = raw_input("  Presione Enter para volver al men£ anterior...")
+	else:
+		dejar_login = False
 	while not dejar_login:
 		nick = raw_input("  Ingrese su nombre de usuario:")
 		if not(nick.isalnum()):
@@ -133,7 +169,6 @@ def loginJugador():
 			dejar_login = not(opcionsn("  ¨Desea ingresar otro usuario? "))
 
 
-
 def ListarFixture():
 	limpiar_pantalla()
 	ArchFixture = open("fixture.dat","rb")
@@ -146,7 +181,7 @@ def ListarFixture():
 		print "\n  Lista de Partidos  \n"
 		i = 1
 		for item in fixture:
-			print "  " + str(item["numero_partido"]) + ") " + str(item["local"]) + " - " + str(item ["visitante"]),
+			print "  " + str(item["numero_partido"]) + ") " + str(item["local"]) + " - " + str(item["visitante"]),
 			if (item["jugado"]):
 				print " (" + str(item["goles_local"]) + "-" + str(item["goles_visitante"]) + ")"
 			else:
@@ -187,6 +222,9 @@ def AgregarResultado():
 				fixture[id_partido-1]["goles_local"] = gol_l
 				fixture[id_partido-1]["goles_visitante"] = gol_v
 				fixture[id_partido-1]["jugado"] = True
+				ArchFixture = open("fixture.dat","wb")
+				guardar_en_archivo(ArchFixture, fixture)
+				ArchFixture.close()
 				print "\n  Resultado guardado con ‚xito."
 				continuar_id = opcionsn("  ¨Desea agregar otro resultado?")
 def ListarUsuarios():
@@ -245,6 +283,7 @@ def AgregarUsuario():
 			for partido in fixture:
 				nuevo_usuario["prode"].append({
 						"numero_partido": partido["numero_partido"],
+						"ingresado": False,
 						"goles_local": 0,
 						"goles_visitante": 0
 				})
@@ -310,6 +349,7 @@ def menuAdmin():
 		except ValueError:
 			OpcInv_Admin = True
 
+
 def menuprincipal():
 	continuar = True
 	OpcInv_Main = False
@@ -343,10 +383,6 @@ def menuprincipal():
 		except ValueError:
 			OpcInv_Main = True
 				
-
-
-
-
 
 #
 #Comienza el programa
