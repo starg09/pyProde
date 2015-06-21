@@ -95,7 +95,7 @@ def miProde(nombre):
 				print "[0]"
 			else:
 				print "[" + str(calcular_puntaje(item, datos_usuario["prode"][i-1])) + "]"
-		if not (datos_usuario["prode"][i-1]["ingresado"]):
+		else:
 			print ""
 		i += 1
 		if i%7==1 and i<len(fixture):
@@ -103,6 +103,51 @@ def miProde(nombre):
 			limpiar_pantalla()
 			print "\n  Mi Prode  \n"
 	terminar = raw_input("\n\n  Presione Enter para volver al men£ anterior...")
+
+def AgregarPronostico(nombre):
+	limpiar_pantalla()
+	ArchFixture = open("fixture.dat","rb")
+	fixture, dummy = leer_desde_archivo(ArchFixture) #Variable dummy se usar  siempre cuando no se necesite esa var
+	ArchFixture.close()
+	ArchUsuarios = open("usuarios.dat","rb")
+	usuarios, dummy = leer_desde_archivo(ArchUsuarios)
+	ArchUsuarios.close()
+	for item in usuarios:
+		if item["nombre"] == nombre:
+			item["prode"] = sorted(item["prode"], key=lambda x: (x['numero_partido']))
+			fixture = ordenar_fixture(fixture)
+			ids_validos = []
+			ids_jugados = []
+			for item_fixture in fixture:
+				ids_validos.append(item_fixture["numero_partido"])
+				if (item_fixture["jugado"] == True):
+					ids_jugados.append(item_fixture["numero_partido"]) 
+			continuar_id = True
+			while continuar_id:
+				id_partido = -999
+				while ((id_partido not in ids_validos) or (id_partido in ids_jugados)) and continuar_id:
+					limpiar_pantalla()
+					id_partido = leer_natural("  Inserte su numero de partido, del 1 al " + str(max(ids_validos)) + ": ")
+					if id_partido not in ids_validos:
+						continuar_id = opcionsn("  N£mero de partido fuera de rango. ¨Desea ingresar uno nuevamente?")
+					if id_partido in ids_jugados:
+						print "\n  Resultado cerrado, ya no se puede cargar.\n"
+						continuar_id = opcionsn("  ¨Desea ingresar otro partido?")
+				if (id_partido in ids_validos) and (id_partido not in ids_jugados):
+					modificar_res = False
+					while not(modificar_res):
+						print "\n  Pronosticando partido " + str(id_partido) + ": " + fixture[id_partido-1]["local"] + " - " + fixture[id_partido-1]["visitante"] + "\n"
+						gol_l = leer_natural(str(fixture[id_partido-1]["local"]) + ": ")
+						gol_v = leer_natural(str(fixture[id_partido-1]["visitante"]) + ": ")
+						modificar_res = opcionsn("  Usted ingres¢:" + fixture[id_partido-1]["local"] + " " + str(gol_l) + " - " + fixture[id_partido-1]["visitante"] + " " + str(gol_v) + "\n  ¨Es esto correcto?")
+					item["prode"][id_partido-1]["goles_local"] = gol_l
+					item["prode"][id_partido-1]["goles_visitante"] = gol_v
+					item["prode"][id_partido-1]["ingresado"] = True
+					ArchUsuarios = open("usuarios.dat","wb")
+					guardar_en_archivo(ArchUsuarios, usuarios)
+					ArchUsuarios.close()
+					print "\n  Resultado guardado con ‚xito."
+					continuar_id = opcionsn("  ¨Desea agregar otro resultado?")
 
 def menuJugador(nombre):
 	salir = False
@@ -132,8 +177,7 @@ def menuJugador(nombre):
 			elif opcion == 2:
 				miProde(nombre)
 			elif opcion == 3:
-				#TO-DO
-				pass
+				AgregarPronostico(nombre)
 			elif opcion == 4:
 				#TO-DO
 				pass
@@ -209,6 +253,7 @@ def AgregarResultado():
 		while continuar_id:
 			id_partido = -999
 			while id_partido not in ids_validos and continuar_id:
+				limpiar_pantalla()
 				id_partido = leer_natural("  Inserte su numero de partido, del 1 al " + str(max(ids_validos)) + ": ")
 				if id_partido not in ids_validos:
 					continuar_id = opcionsn("  N£mero de partido fuera de rango. ¨Desea ingresar uno nuevamente?")
@@ -280,6 +325,7 @@ def AgregarUsuario():
 				"puntaje": 0,
 				"prode": []
 			}
+			#To-do: Reemplazar por funciones de prode.py, usar csv de "0 a 0"
 			for partido in fixture:
 				nuevo_usuario["prode"].append({
 						"numero_partido": partido["numero_partido"],
