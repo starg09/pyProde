@@ -14,12 +14,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		puntaje_esperado = 5
 
@@ -37,12 +37,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 3,
-			'visitante': 0
+			'goles_local': 3,
+			'goles_visitante': 0
 		}
 		puntaje_esperado = 3
 
@@ -60,12 +60,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 4,
-			'visitante': 2
+			'goles_local': 4,
+			'goles_visitante': 2
 		}
 		puntaje_esperado = 3
 
@@ -83,12 +83,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 2,
-			'visitante': 1
+			'goles_local': 2,
+			'goles_visitante': 1
 		}
 		puntaje_esperado = 3
 
@@ -106,12 +106,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 4,
-			'visitante': 0
+			'goles_local': 4,
+			'goles_visitante': 0
 		}
 		puntaje_esperado = 2
 
@@ -129,12 +129,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 3,
-			'visitante': 3
+			'goles_local': 3,
+			'goles_visitante': 3
 		}
 		puntaje_esperado = 1
 
@@ -152,12 +152,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 1,
-			'visitante': 2
+			'goles_local': 1,
+			'goles_visitante': 2
 		}
 		puntaje_esperado = 1
 
@@ -175,12 +175,12 @@ class TestCalcularPuntajesGanaLocal(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		puntaje_esperado = 0
 
@@ -204,12 +204,12 @@ class TestCalcularPuntajesEmpate(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 2
+			'goles_local': 2,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 2,
-			'visitante': 2
+			'goles_local': 2,
+			'goles_visitante': 2
 		}
 		puntaje_esperado = 5
 
@@ -229,12 +229,12 @@ class TestCalcularPuntajesEmpate(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 2
+			'goles_local': 2,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 1,
-			'visitante': 1
+			'goles_local': 1,
+			'goles_visitante': 1
 		}
 		puntaje_esperado = 3
 
@@ -252,12 +252,12 @@ class TestCalcularPuntajesEmpate(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 2
+			'goles_local': 2,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 2,
-			'visitante': 0
+			'goles_local': 2,
+			'goles_visitante': 0
 		}
 		puntaje_esperado = 1
 
@@ -275,12 +275,12 @@ class TestCalcularPuntajesEmpate(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 2
+			'goles_local': 2,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 1,
-			'visitante': 2
+			'goles_local': 1,
+			'goles_visitante': 2
 		}
 		puntaje_esperado = 1
 
@@ -298,12 +298,12 @@ class TestCalcularPuntajesEmpate(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 2
+			'goles_local': 2,
+			'goles_visitante': 2
 		}
 		pronostico = {
-			'local': 1,
-			'visitante': 3
+			'goles_local': 1,
+			'goles_visitante': 3
 		}
 		puntaje_esperado = 0
 
@@ -324,12 +324,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		puntaje_esperado = 5
 
@@ -347,12 +347,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 0,
-			'visitante': 3
+			'goles_local': 0,
+			'goles_visitante': 3
 		}
 		puntaje_esperado = 3
 
@@ -370,12 +370,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 2,
-			'visitante': 4
+			'goles_local': 2,
+			'goles_visitante': 4
 		}
 		puntaje_esperado = 3
 
@@ -393,12 +393,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 1,
-			'visitante': 2
+			'goles_local': 1,
+			'goles_visitante': 2
 		}
 		puntaje_esperado = 3
 
@@ -416,12 +416,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 0,
-			'visitante': 4
+			'goles_local': 0,
+			'goles_visitante': 4
 		}
 		puntaje_esperado = 2
 
@@ -439,12 +439,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 3,
-			'visitante': 3
+			'goles_local': 3,
+			'goles_visitante': 3
 		}
 		puntaje_esperado = 1
 
@@ -462,12 +462,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 2,
-			'visitante': 1
+			'goles_local': 2,
+			'goles_visitante': 1
 		}
 		puntaje_esperado = 1
 
@@ -485,12 +485,12 @@ class TestCalcularPuntajesGanaVisitante(unittest.TestCase):
 		"""
 		# Setup
 		resultado = {
-			'local': 2,
-			'visitante': 3
+			'goles_local': 2,
+			'goles_visitante': 3
 		}
 		pronostico = {
-			'local': 3,
-			'visitante': 2
+			'goles_local': 3,
+			'goles_visitante': 2
 		}
 		puntaje_esperado = 0
 
